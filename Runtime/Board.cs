@@ -51,36 +51,36 @@ namespace MIW.ADOO.Runtime
             return true;
         }
 
-        public bool IsTileEmpty(TicTacToeCoord ticTacToeCoord)
+        public bool IsTileEmpty(TicTacToeCoord TicTacToeCoord)
         {
-            Debug.Assert(ticTacToeCoord != null);
+            Debug.Assert(TicTacToeCoord != null);
             
-            return !IsTileFull(ticTacToeCoord, Color.X) && !IsTileFull(ticTacToeCoord, Color.O);
+            return !IsTileFull(TicTacToeCoord, Color.X) && !IsTileFull(TicTacToeCoord, Color.O);
         }
 
-        public bool IsTileFull(TicTacToeCoord ticTacToeCoord, Color color)
+        public bool IsTileFull(TicTacToeCoord TicTacToeCoord, Color color)
         {
-            Debug.Assert(ticTacToeCoord != null);
+            Debug.Assert(TicTacToeCoord != null);
             Debug.Assert(color != Color.None);
             
-            return coordinates[(int) color].Contains(ticTacToeCoord);
+            return coordinates[(int) color].Contains(TicTacToeCoord);
         }
 
         public void Write() => IO.Write(ToString());
 
-        public void Put(TicTacToeCoord ticTacToeCoord, Color color)
+        public void Put(TicTacToeCoord TicTacToeCoord, Color color)
         {
-            Debug.Assert(ticTacToeCoord != null);
+            Debug.Assert(TicTacToeCoord != null);
             Debug.Assert(color != Color.None);
             
-            coordinates[(int) color].Add(ticTacToeCoord);
+            coordinates[(int) color].Add(TicTacToeCoord);
         }
 
-        public void Remove(TicTacToeCoord ticTacToeCoord)
+        public void Remove(TicTacToeCoord TicTacToeCoord)
         {
-            Debug.Assert(ticTacToeCoord  != null);
+            Debug.Assert(TicTacToeCoord  != null);
             
-            Put(ticTacToeCoord, Color.None);
+            Put(TicTacToeCoord, Color.None);
         }
     }
 }
