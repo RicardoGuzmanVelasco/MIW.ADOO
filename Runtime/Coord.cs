@@ -7,8 +7,8 @@ namespace MIW.ADOO.Runtime
         public int Row { get; protected set; }
         public int Col { get; protected set; }
 
-        protected Coord() { }
-        protected Coord(int row, int col)
+        public Coord() { }
+        public Coord(int row, int col)
         {
             Row = row;
             Col = col;
