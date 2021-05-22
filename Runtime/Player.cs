@@ -7,9 +7,10 @@ namespace MIW.ADOO.Runtime
     {
         internal readonly Color color;
         
-        public Player(int playerIndex)
+        public Player(int playerIndex, int numPlayers)
         {
-            var playersRange = new ClosedInterval(0, TicTacToe.PlayersCount - 1);
+            Debug.Assert(numPlayers > 1);
+            var playersRange = new ClosedInterval(0, numPlayers - 1);
             Debug.Assert(playersRange.Includes(playerIndex));
             
             color = (Color)playerIndex;

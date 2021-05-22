@@ -6,11 +6,14 @@ namespace MIW.ADOO.Runtime
 {
     public class Board
     {
-        public const int Dimension = 3;
         readonly Dictionary<int, HashSet<Coord>> coordinates;
+        readonly int numPlayers;
 
-        public Board()
+        public Board(int numPlayers)
         {
+            Debug.Assert(numPlayers > 1);
+
+            this.numPlayers = numPlayers;
             coordinates = new Dictionary<int, HashSet<Coord>>
             {
                 [(int) Color.X] = new HashSet<Coord>(),
@@ -22,10 +25,10 @@ namespace MIW.ADOO.Runtime
         {
             var tokensCount = 0;
 
-            for(var i = 0; i < TicTacToe.PlayersCount; i++)
+            for(var i = 0; i < numPlayers; i++)
                 tokensCount += coordinates[i]?.Count ?? 0;
 
-            return tokensCount == Dimension * TicTacToe.PlayersCount;
+            return tokensCount == Coord.Dimension * numPlayers;
         }
 
         public bool IsTicTacToe() => IsTicTacToe(Color.O) || IsTicTacToe(Color.X);
@@ -34,14 +37,14 @@ namespace MIW.ADOO.Runtime
             Debug.Assert(color != Color.None);
             
             var tokens = coordinates[(int) color].ToArray();
-            if(tokens.Length != Dimension)
+            if(tokens.Length != Coord.Dimension)
                 return false;
 
             var direction = tokens.First().DirectionRelativeTo(tokens[1]);
             if(direction == Direction.None)
                 return false;
             
-            for(var i = 1; i < Dimension - 1; i ++)
+            for(var i = 1; i < Coord.Dimension - 1; i ++)
                 if(tokens[i].DirectionRelativeTo(tokens[i + 1]) != direction)
                     return false;
             

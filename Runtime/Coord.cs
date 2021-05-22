@@ -4,7 +4,8 @@ namespace MIW.ADOO.Runtime
 {
     public class Coord
     {
-        static readonly ClosedInterval Limits = new ClosedInterval(0, 2);
+        public const int Dimension = 3;
+        static readonly ClosedInterval Limits = new ClosedInterval(0, Dimension - 1);
 
         public int Row { get; private set; }
         public int Col { get; private set; }
@@ -25,8 +26,8 @@ namespace MIW.ADOO.Runtime
 
             IO.Write(title + ": ¿qué casilla?");
 
-            Row = new LimitedIntDialog("¿Fila?", Board.Dimension).Read() - 1;
-            Col = new LimitedIntDialog("¿Columna?", Board.Dimension).Read() - 1;
+            Row = new LimitedIntDialog("¿Fila?", Dimension).Read() - 1;
+            Col = new LimitedIntDialog("¿Columna?", Dimension).Read() - 1;
         }
 
         public Direction DirectionRelativeTo(Coord other)
@@ -49,7 +50,7 @@ namespace MIW.ADOO.Runtime
         }
 
         bool IsInDiagonal() => Row == Col;
-        bool IsInInverseDiagonal() => Row + Col == Board.Dimension;
+        bool IsInInverseDiagonal() => Row + Col == Dimension;
 
         protected bool Equals(Coord other) => Row == other.Row && Col == other.Col;
         public override bool Equals(object obj)
