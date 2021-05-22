@@ -6,7 +6,7 @@ namespace MIW.ADOO.Runtime
 {
     public class Board
     {
-        readonly Dictionary<int, HashSet<Coord>> coordinates;
+        readonly Dictionary<int, HashSet<TicTacToeCoord>> coordinates;
         readonly int numPlayers;
 
         public Board(int numPlayers)
@@ -14,10 +14,10 @@ namespace MIW.ADOO.Runtime
             Debug.Assert(numPlayers > 1);
 
             this.numPlayers = numPlayers;
-            coordinates = new Dictionary<int, HashSet<Coord>>
+            coordinates = new Dictionary<int, HashSet<TicTacToeCoord>>
             {
-                [(int) Color.X] = new HashSet<Coord>(),
-                [(int) Color.O] = new HashSet<Coord>()
+                [(int) Color.X] = new HashSet<TicTacToeCoord>(),
+                [(int) Color.O] = new HashSet<TicTacToeCoord>()
             };
         }
 
@@ -28,7 +28,7 @@ namespace MIW.ADOO.Runtime
             for(var i = 0; i < numPlayers; i++)
                 tokensCount += coordinates[i]?.Count ?? 0;
 
-            return tokensCount == Coord.Dimension * numPlayers;
+            return tokensCount == TicTacToeCoord.Dimension * numPlayers;
         }
 
         public bool IsTicTacToe() => IsTicTacToe(Color.O) || IsTicTacToe(Color.X);
@@ -37,50 +37,50 @@ namespace MIW.ADOO.Runtime
             Debug.Assert(color != Color.None);
             
             var tokens = coordinates[(int) color].ToArray();
-            if(tokens.Length != Coord.Dimension)
+            if(tokens.Length != TicTacToeCoord.Dimension)
                 return false;
 
             var direction = tokens.First().DirectionRelativeTo(tokens[1]);
             if(direction == Direction.None)
                 return false;
             
-            for(var i = 1; i < Coord.Dimension - 1; i ++)
+            for(var i = 1; i < TicTacToeCoord.Dimension - 1; i ++)
                 if(tokens[i].DirectionRelativeTo(tokens[i + 1]) != direction)
                     return false;
             
             return true;
         }
 
-        public bool IsTileEmpty(Coord coord)
+        public bool IsTileEmpty(TicTacToeCoord ticTacToeCoord)
         {
-            Debug.Assert(coord != null);
+            Debug.Assert(ticTacToeCoord != null);
             
-            return !IsTileFull(coord, Color.X) && !IsTileFull(coord, Color.O);
+            return !IsTileFull(ticTacToeCoord, Color.X) && !IsTileFull(ticTacToeCoord, Color.O);
         }
 
-        public bool IsTileFull(Coord coord, Color color)
+        public bool IsTileFull(TicTacToeCoord ticTacToeCoord, Color color)
         {
-            Debug.Assert(coord != null);
+            Debug.Assert(ticTacToeCoord != null);
             Debug.Assert(color != Color.None);
             
-            return coordinates[(int) color].Contains(coord);
+            return coordinates[(int) color].Contains(ticTacToeCoord);
         }
 
         public void Write() => IO.Write(ToString());
 
-        public void Put(Coord coord, Color color)
+        public void Put(TicTacToeCoord ticTacToeCoord, Color color)
         {
-            Debug.Assert(coord != null);
+            Debug.Assert(ticTacToeCoord != null);
             Debug.Assert(color != Color.None);
             
-            coordinates[(int) color].Add(coord);
+            coordinates[(int) color].Add(ticTacToeCoord);
         }
 
-        public void Remove(Coord coord)
+        public void Remove(TicTacToeCoord ticTacToeCoord)
         {
-            Debug.Assert(coord  != null);
+            Debug.Assert(ticTacToeCoord  != null);
             
-            Put(coord, Color.None);
+            Put(ticTacToeCoord, Color.None);
         }
     }
 }

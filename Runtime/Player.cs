@@ -26,7 +26,7 @@ namespace MIW.ADOO.Runtime
         {
             IO.Write("Mueve ficha " + color);
 
-            var origin = new Coord();
+            var origin = new TicTacToeCoord();
             bool ok;
 
             do
@@ -46,9 +46,9 @@ namespace MIW.ADOO.Runtime
             IO.Write("Pone el jugador " + color);
             Put(board, "En", null);
         }
-        void Put(Board board, string title, Coord fromCoord)
+        void Put(Board board, string title, TicTacToeCoord fromCoord)
         {
-            var target = new Coord();
+            var target = new TicTacToeCoord();
             bool ok;
 
             do
