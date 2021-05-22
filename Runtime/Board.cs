@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace MIW.ADOO.Runtime
 {
@@ -30,6 +31,8 @@ namespace MIW.ADOO.Runtime
         public bool IsTicTacToe() => IsTicTacToe(Color.O) || IsTicTacToe(Color.X);
         bool IsTicTacToe(Color color)
         {
+            Debug.Assert(color != Color.None);
+            
             var tokens = coordinates[(int) color].ToArray();
             if(tokens.Length != Dimension)
                 return false;
@@ -45,12 +48,36 @@ namespace MIW.ADOO.Runtime
             return true;
         }
 
-        public bool IsTileEmpty(Coord coord) => !IsTileFull(coord, Color.X) && !IsTileFull(coord, Color.O);
-        public bool IsTileFull(Coord coord, Color color) => coordinates[(int) color].Contains(coord);
+        public bool IsTileEmpty(Coord coord)
+        {
+            Debug.Assert(coord != null);
+            
+            return !IsTileFull(coord, Color.X) && !IsTileFull(coord, Color.O);
+        }
+
+        public bool IsTileFull(Coord coord, Color color)
+        {
+            Debug.Assert(coord != null);
+            Debug.Assert(color != Color.None);
+            
+            return coordinates[(int) color].Contains(coord);
+        }
 
         public void Write() => IO.Write(ToString());
 
-        public void Put(Coord coord, Color color) => coordinates[(int)color].Add(coord);
-        public void Remove(Coord coord) => Put(coord, Color.None);
+        public void Put(Coord coord, Color color)
+        {
+            Debug.Assert(coord != null);
+            Debug.Assert(color != Color.None);
+            
+            coordinates[(int) color].Add(coord);
+        }
+
+        public void Remove(Coord coord)
+        {
+            Debug.Assert(coord  != null);
+            
+            Put(coord, Color.None);
+        }
     }
 }

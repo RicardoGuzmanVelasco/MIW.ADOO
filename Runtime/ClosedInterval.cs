@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace MIW.ADOO.Runtime
 {
     public class ClosedInterval
@@ -7,6 +9,8 @@ namespace MIW.ADOO.Runtime
 
         public ClosedInterval(int min, int max)
         {
+            Debug.Assert(min < max);
+
             this.min = min;
             this.max = max;
         }

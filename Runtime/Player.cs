@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 namespace MIW.ADOO.Runtime
 {
@@ -6,12 +7,20 @@ namespace MIW.ADOO.Runtime
     {
         internal readonly Color color;
         
-        public Player(int i) => color = (Color)(i+1);
+        public Player(int playerIndex)
+        {
+            var playersRange = new ClosedInterval(0, TicTacToe.PlayersCount - 1);
+            Debug.Assert(playersRange.Includes(playerIndex));
+            
+            color = (Color)playerIndex;
+        }
 
         public void Win() => IO.Write("Ha ganado " + color);
 
         public void Move(Board board)
         {
+            Debug.Assert(board != null);
+            
             IO.Write("Mueve ficha " + color);
 
             var origin = new Coord();
@@ -31,6 +40,8 @@ namespace MIW.ADOO.Runtime
 
         public void Put(Board board)
         {
+            Debug.Assert(board != null);
+            
             IO.Write("Pone el jugador " + color);
             Put(board, "En", null);
         }
