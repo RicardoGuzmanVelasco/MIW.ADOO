@@ -1,4 +1,4 @@
-namespace MIW.ADOO.Runtime
+namespace MIW.ADOO.Runtime.Utils
 {
     public enum Direction
     {

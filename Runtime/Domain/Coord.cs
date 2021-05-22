@@ -1,24 +1,25 @@
 using System.Diagnostics;
+using MIW.ADOO.Runtime.Utils;
 
 namespace MIW.ADOO.Runtime
 {
-    public class TicTacToeCoord
+    public class Coord
     {
         public const int Dimension = 3;
         static readonly ClosedInterval Limits = new ClosedInterval(0, Dimension - 1);
 
-        Coord coord;
+        Utils.Coord coord;
 
-        public TicTacToeCoord()
+        public Coord()
         {
-            coord = new Coord();
+            coord = new Utils.Coord();
         }
-        public TicTacToeCoord(int row, int col)
+        public Coord(int row, int col)
         {
             Debug.Assert(Limits.Includes(row));
             Debug.Assert(Limits.Includes(col));
 
-            coord = new Coord(row, col);
+            coord = new Utils.Coord(row, col);
         }
         
         public void Read(string title)
@@ -29,10 +30,10 @@ namespace MIW.ADOO.Runtime
 
             var row = new LimitedIntDialog("¿Fila?", Dimension).Read() - 1;
             var col = new LimitedIntDialog("¿Columna?", Dimension).Read() - 1;
-            coord = new Coord(row, col);
+            coord = new Utils.Coord(row, col);
         }
 
-        public Direction DirectionRelativeTo(TicTacToeCoord other)
+        public Direction DirectionRelativeTo(Coord other)
         {
             var direction = coord.DirectionRelativeTo(other.coord);
             if(direction != Direction.None)
@@ -45,13 +46,13 @@ namespace MIW.ADOO.Runtime
         
         bool IsInInverseDiagonal() => coord.Row + coord.Col == Dimension - 1;
 
-        protected bool Equals(TicTacToeCoord other) => Equals(coord, other.coord);
+        protected bool Equals(Coord other) => Equals(coord, other.coord);
         public override bool Equals(object obj)
         {
             if(ReferenceEquals(null, obj)) return false;
             if(ReferenceEquals(this, obj)) return true;
             if(obj.GetType() != this.GetType()) return false;
-            return Equals((TicTacToeCoord) obj);
+            return Equals((Coord) obj);
         }
         public override int GetHashCode() => coord != null ? coord.GetHashCode() : 0;
     }

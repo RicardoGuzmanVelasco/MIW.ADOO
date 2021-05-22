@@ -1,7 +1,9 @@
 {
     "name": "MIW.ADOO",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:609b689c8ef98124ab6f8d536253f6f0"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

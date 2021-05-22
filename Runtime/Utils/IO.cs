@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace MIW.ADOO.Runtime
+namespace MIW.ADOO.Runtime.Utils
 {
     public static class IO
     {

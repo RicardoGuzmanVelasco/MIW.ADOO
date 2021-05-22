@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using MIW.ADOO.Runtime.Utils;
 
 namespace MIW.ADOO.Runtime
 {
@@ -26,7 +27,7 @@ namespace MIW.ADOO.Runtime
         {
             IO.Write("Mueve ficha " + color);
 
-            var origin = new TicTacToeCoord();
+            var origin = new Coord();
             bool ok;
 
             do
@@ -46,9 +47,9 @@ namespace MIW.ADOO.Runtime
             IO.Write("Pone el jugador " + color);
             Put(board, "En", null);
         }
-        void Put(Board board, string title, TicTacToeCoord fromCoord)
+        void Put(Board board, string title, Coord fromCoord)
         {
-            var target = new TicTacToeCoord();
+            var target = new Coord();
             bool ok;
 
             do

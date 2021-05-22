@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace MIW.ADOO.Runtime
+namespace MIW.ADOO.Runtime.Utils
 {
     public class Coord
     {
