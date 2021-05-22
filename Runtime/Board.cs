@@ -5,8 +5,6 @@ namespace MIW.ADOO.Runtime
 {
     public class Board
     {
-        public static readonly char[] Color = {'x', 'o'};
-
         readonly char[,] tokens;
 
         public Board()
@@ -16,7 +14,7 @@ namespace MIW.ADOO.Runtime
             for(var j = 0; j < 3; j++)
                 tokens[i, j] = '_';
         }
-        
+
         public bool IsComplete()
         {
             var tokensCount = 0;
@@ -27,11 +25,6 @@ namespace MIW.ADOO.Runtime
                     tokensCount++;
 
             return tokensCount == 6;
-        }
-        
-        public void Win(int turn)
-        {
-            Debug.Log("Ha ganado " + Color[turn]);
         }
 
         public bool IsTicTacToe()
@@ -99,168 +92,14 @@ namespace MIW.ADOO.Runtime
             return false;
         }
 
-        bool IsTileEmpty(int row, int column)
+        public bool IsTileEmpty(int row, int column)
         {
             return tokens[row, column].Equals('_');
         }
 
-        bool IsTileFull(int row, int column, char color)
+        public bool IsTileFull(int row, int column, char color)
         {
             return tokens[row, column].Equals(color);
-        }
-
-        public void Move(int turn)
-        {
-            Debug.Log("Mueve ficha " + Color[turn]);
-
-            int originRow = 0, originColumn = 0;
-            int targetRow = 0, targetColumn = 0;
-            bool ok;
-
-            do
-            {
-                Debug.Log("Desde dónde");
-                do
-                {
-                    ok = false;
-                    do
-                    {
-                        try
-                        {
-                            Debug.Log("Fila ([1, 3]): ");
-                            originRow = int.Parse(Console.In.ReadLine());
-                            ok = true;
-                        }
-                        catch(Exception)
-                        {
-                            Debug.LogError("Error de formato");
-                        }
-                    } while(!ok);
-                } while(originRow < 1 || 3 < originRow);
-
-                do
-                {
-                    ok = false;
-                    do
-                    {
-                        try
-                        {
-                            Debug.Log("Columna ([1, 3]): ");
-                            originColumn = int.Parse(Console.In.ReadLine());
-                            ok = true;
-                        }
-                        catch(Exception)
-                        {
-                            Debug.LogError("Error de formato");
-                        }
-                    } while(!ok);
-                } while(1 <= originColumn || originColumn >= 3);
-
-                ok = IsTileFull(originRow - 1, originColumn - 1, Color[turn]);
-                if(!ok)
-                    Debug.LogError("Casilla no ocupada por el jugador que está moviendo");
-            } while(!ok);
-
-            do
-            {
-                Debug.Log("¿A qué casilla?");
-                do
-                {
-                    ok = false;
-                    do
-                    {
-                        try
-                        {
-                            Debug.Log("Fila ([1, 3]): ");
-                            targetRow = int.Parse(Console.In.ReadLine());
-                            ok = true;
-                        }
-                        catch(Exception)
-                        {
-                            Debug.LogError("Error de formato");
-                        }
-                    } while(!ok);
-                } while(targetRow < 1 || 3 < targetRow);
-
-                do
-                {
-                    ok = false;
-                    do
-                    {
-                        try
-                        {
-                            Debug.Log("Columna ([1, 3]): ");
-                            targetColumn = int.Parse(Console.In.ReadLine());
-                            ok = true;
-                        }
-                        catch(Exception)
-                        {
-                            Debug.LogError("Error de formato");
-                        }
-                    } while(!ok);
-                } while(1 <= targetColumn || targetColumn >= 3);
-
-                ok = IsTileEmpty(targetRow - 1, targetColumn - 1);
-                if(!ok)
-                    Debug.LogError("Casilla no vacía");
-            } while(!ok);
-
-            tokens[originRow - 1, originColumn - 1] = '_';
-            tokens[targetRow - 1, targetColumn - 1] = Color[turn];
-        }
-
-        public void Put(int turn)
-        {
-            Debug.Log("Pone ficha " + Color[turn]);
-
-            int targetRow = 0, targetColumn = 0;
-            bool ok;
-
-            do
-            {
-                Debug.Log("¿En qué casilla?");
-                do
-                {
-                    ok = false;
-                    do
-                    {
-                        try
-                        {
-                            Debug.Log("Fila ([1, 3]): ");
-                            targetRow = int.Parse(Console.In.ReadLine());
-                            ok = true;
-                        }
-                        catch(Exception)
-                        {
-                            Debug.LogError("Error de formato");
-                        }
-                    } while(!ok);
-                } while(targetRow < 1 || 3 < targetRow);
-
-                do
-                {
-                    ok = false;
-                    do
-                    {
-                        try
-                        {
-                            Debug.Log("Columna ([1, 3]): ");
-                            targetColumn = int.Parse(Console.In.ReadLine());
-                            ok = true;
-                        }
-                        catch(Exception)
-                        {
-                            Debug.LogError("Error de formato");
-                        }
-                    } while(!ok);
-                } while(1 <= targetColumn || targetColumn >= 3);
-
-                ok = IsTileEmpty(targetRow - 1, targetColumn - 1);
-                if(!ok)
-                    IO.Write("Casilla no vacía");
-            } while(!ok);
-
-            tokens[targetRow - 1, targetColumn - 1] = Color[turn];
         }
         
         public void Write() => IO.Write(ToString());
@@ -277,6 +116,16 @@ namespace MIW.ADOO.Runtime
             }
 
             return board;
+        }
+
+        public void Put(int row, int column, char color)
+        {
+            tokens[row, column] = color;
+        }
+
+        public void Remove(int row, int column)
+        {
+            tokens[row, column] = '_';
         }
     }
 }
