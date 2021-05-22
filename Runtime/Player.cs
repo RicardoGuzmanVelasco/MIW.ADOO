@@ -19,7 +19,7 @@ namespace MIW.ADOO.Runtime
         
         
 
-        public void Move(int turn, Board board)
+        public void Move(Board board)
         {
             Debug.Log("Mueve ficha " + color);
 
@@ -116,7 +116,7 @@ namespace MIW.ADOO.Runtime
             board.Put(targetRow - 1, targetColumn - 1, color);
         }
 
-        public void Put(int turn, Board board)
+        public void Put(Board board)
         {
             Debug.Log("Pone ficha " + color);
 

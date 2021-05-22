@@ -39,9 +39,17 @@ class Player
 }
 Player ..> IO
 
+class Turn
+{
+    ~value : int = 0
+    +Turn()
+    +Current() << "Take" >>
+    +Next() << "NotTake">>
+}
+
 class TicTacToe
 {
-    -turn : int
+    -turn : Turn
     -board : Board 
     -players : Player[] [0..*]
     
@@ -50,4 +58,5 @@ class TicTacToe
 }
 TicTacToe --> Board
 TicTacToe --> Player
+TicTacToe --> Turn
 @enduml
