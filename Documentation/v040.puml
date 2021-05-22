@@ -1,0 +1,50 @@
+@startuml
+
+class TicTacToe
+{
+    +{static} Color : char[,] [0..*] = {'x', 'o'}
+    
+    -tokens : char[,] [0..*]
+    -turn : int
+    
+    -start : Start
+    -put : Put
+    -move : Move
+    
+    +TicTacToe()
+    +Play()
+    +Win(turn: int)
+    -IsTicTacToe : bool
+    -IsTicTacToe(token : char) : bool
+    -IsComplete() : bool
+    +IsTileEmpty(row : int, column: int) : bool
+    +IsTileFull(row : int, column: int) : bool
+}
+TicTacToe --> Start
+TicTacToe --> Move
+TicTacToe --> Put
+
+class Start
+{
+    -tokens : char[,] [0..*]
+    
+    +Start(tokens : char[,])
+    +Write()
+}
+
+class Move
+{
+    -tokens : char[,] [0..*]
+        
+    +Move(tokens : char[,])
+    +DoMove(turn : int, TicTacToe ticTacToe)
+}
+
+class Put
+{
+    -tokens : char[,] [0..*]
+        
+    +Put(tokens : char[,])
+    +DoPut(turn : int, TicTacToe ticTacToe)
+}
+@enduml
