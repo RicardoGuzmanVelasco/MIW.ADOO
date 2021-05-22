@@ -23,6 +23,7 @@ namespace MIW.ADOO.Runtime
                     players[turn.Current()].Put(board);
                 else
                     players[turn.Current()].Move(board);
+                turn.Change();
             } while(!board.IsTicTacToe());
 
             board.Write();
