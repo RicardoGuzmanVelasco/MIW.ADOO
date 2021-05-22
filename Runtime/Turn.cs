@@ -1,27 +1,27 @@
 using System.Diagnostics;
+using System.Linq;
 
 namespace MIW.ADOO.Runtime
 {
     public class Turn
     {
-        internal int value;
-        readonly int limit;
+        int value;
+        readonly Player[] players;
 
-        public Turn(int limit)
+        public Turn(Player[] players)
         {
-            Debug.Assert(value < limit);
-            Debug.Assert(limit > 1);
+            Debug.Assert(players != null);
+            Debug.Assert(players.Any());
+            Debug.Assert(players.All(p => p != null));
 
-            this.limit = limit;
+            this.players = players;
         }
 
-        public int Current() => value;
-        public int Next() => (value + 1) % limit;
+        public Player Current() => players[value];
+        public Player Next() => players[NextIndex()];
+        public void Change() => value = NextIndex();
 
-        public void Change()
-        {
-            value++;
-            value %= limit;
-        }
+        public int NextIndex() => (value + 1) % players.Length;
+
     }
 }

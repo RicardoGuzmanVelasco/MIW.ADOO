@@ -3,25 +3,27 @@ using System.Diagnostics;
 
 namespace MIW.ADOO.Runtime
 {
-    internal class Player
+    public class Player
     {
         internal readonly Color color;
+
+        readonly Board board;
         
-        public Player(int playerIndex, int numPlayers)
+        public Player(int playerIndex, int numPlayers, Board board)
         {
             Debug.Assert(numPlayers > 1);
             var playersRange = new ClosedInterval(0, numPlayers - 1);
             Debug.Assert(playersRange.Includes(playerIndex));
-            
+            Debug.Assert(board != null);
+
             color = (Color)playerIndex;
+            this.board = board;
         }
 
         public void Win() => IO.Write("Ha ganado " + color);
 
-        public void Move(Board board)
+        public void Move()
         {
-            Debug.Assert(board != null);
-            
             IO.Write("Mueve ficha " + color);
 
             var origin = new Coord();
@@ -39,10 +41,8 @@ namespace MIW.ADOO.Runtime
             Put(board, "Hacia", origin);
         }
 
-        public void Put(Board board)
+        public void Put()
         {
-            Debug.Assert(board != null);
-            
             IO.Write("Pone el jugador " + color);
             Put(board, "En", null);
         }
