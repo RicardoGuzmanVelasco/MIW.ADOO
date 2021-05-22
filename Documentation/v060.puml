@@ -1,5 +1,14 @@
 @startuml
 
+class Token <<Value Object>>
+{
+    +Value : char {get}
+    
+    +Token(value : char)
+    +Clone()
+    +Equals(other : Token)
+}
+
 class Board
 {
     +{static} Color : char[,] [0..*] = {'x', 'o'}
@@ -21,7 +30,8 @@ class Board
     
     +ToString() : string
 }
-Board --> IO
+Board ..> IO
+Board --> Token
 
 class IO <<static>>
 {
