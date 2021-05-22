@@ -5,12 +5,12 @@ namespace MIW.ADOO.Runtime
         internal int value;
 
         public int Current() => value;
-        public int Next() => (value + 1) % 2;
+        public int Next() => (value + 1) % TicTacToe.PlayersCount;
 
         public void Change()
         {
             value++;
-            value %= 2;
+            value %= TicTacToe.PlayersCount;
         }
     }
 }

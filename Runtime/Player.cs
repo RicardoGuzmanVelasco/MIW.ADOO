@@ -1,13 +1,12 @@
 using System;
-using UnityEngine;
 
 namespace MIW.ADOO.Runtime
 {
     internal class Player
     {
-        internal readonly char color;
+        internal readonly Color color;
         
-        public Player(int i) => color = i == 0 ? 'x' : 'o';
+        public Player(int i) => color = (Color)(i+1);
 
         public void Win() => IO.Write("Ha ganado " + color);
 

@@ -1,113 +1,56 @@
-using System;
-using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MIW.ADOO.Runtime
 {
     public class Board
     {
-        readonly char[,] tokens;
+        public const int Dimension = 3;
+        readonly Dictionary<int, HashSet<Coord>> coordinates;
 
         public Board()
         {
-            tokens = new char[3,3];
-            for(var i = 0; i < 3; i++)
-            for(var j = 0; j < 3; j++)
-                tokens[i, j] = '_';
+            coordinates = new Dictionary<int, HashSet<Coord>>
+            {
+                [(int) Color.X] = new HashSet<Coord>(),
+                [(int) Color.O] = new HashSet<Coord>()
+            };
         }
 
         public bool IsComplete()
         {
             var tokensCount = 0;
 
-            for(var i = 0; i < 3; i++)
-            for(var j = 0; j < 3; j++)
-                if(!tokens[i, j].Equals('_'))
-                    tokensCount++;
+            for(var i = 0; i < TicTacToe.PlayersCount; i++)
+                tokensCount += coordinates[i]?.Count ?? 0;
 
-            return tokensCount == 6;
+            return tokensCount == Dimension * TicTacToe.PlayersCount;
         }
 
-        public bool IsTicTacToe() => IsTicTacToe('x') || IsTicTacToe('o');
-        bool IsTicTacToe(char token)
+        public bool IsTicTacToe() => IsTicTacToe(Color.O) || IsTicTacToe(Color.X);
+        bool IsTicTacToe(Color color)
         {
-            if(tokens[1, 1].Equals(token))
-            {
-                if(tokens[0, 0].Equals(token))
-                {
-                    return tokens[2, 2].Equals(token);
-                }
-
-                if(tokens[0, 2].Equals(token))
-                {
-                    return tokens[2, 0].Equals(token);
-                }
-
-                if(tokens[0, 1].Equals(token))
-                {
-                    return tokens[2, 1].Equals(token);
-                }
-
-                if(tokens[1, 0].Equals(token))
-                {
-                    return tokens[1, 2].Equals(token);
-                }
-
+            var tokens = coordinates[(int) color].ToArray();
+            if(tokens.Length != Dimension)
                 return false;
-            }
 
-            if(tokens[0, 0].Equals(token))
-            {
-                if(tokens[0, 1].Equals(token))
-                {
-                    return tokens[0, 2].Equals(token);
-                }
-
-                if(tokens[1, 0].Equals(token))
-                {
-                    return tokens[2, 0].Equals(token);
-                }
-
+            var direction = tokens.First().DirectionRelativeTo(tokens[1]);
+            if(direction == Direction.None)
                 return false;
-            }
-
-            if(tokens[2, 2].Equals(token))
-            {
-                if(tokens[1, 2].Equals(token))
-                {
-                    return tokens[0, 2].Equals(token);
-                }
-
-                if(tokens[2, 1].Equals(token))
-                {
-                    return tokens[2, 0].Equals(token);
-                }
-
-                return false;
-            }
-
-            return false;
+            
+            for(var i = 1; i < Dimension - 1; i ++)
+                if(tokens[i].DirectionRelativeTo(tokens[i + 1]) != direction)
+                    return false;
+            
+            return true;
         }
 
-        public bool IsTileEmpty(Coord coord) => IsTileFull(coord, '_');
-        public bool IsTileFull(Coord coord, char color) => tokens[coord.Row, coord.Col].Equals(color);
+        public bool IsTileEmpty(Coord coord) => !IsTileFull(coord, Color.X) && !IsTileFull(coord, Color.O);
+        public bool IsTileFull(Coord coord, Color color) => coordinates[(int) color].Contains(coord);
 
         public void Write() => IO.Write(ToString());
-        
-        public override string ToString()
-        {
-            var board = "";
 
-            for(var i = 0; i < 3; i++)
-            {
-                for(var j = 0; j < 3; j++)
-                    board += tokens[i, j] + " ";
-                board += "\n";
-            }
-
-            return board;
-        }
-
-        public void Put(Coord coord, char color) => tokens[coord.Row, coord.Col] = color;
-        public void Remove(Coord coord) => Put(coord, '_');
+        public void Put(Coord coord, Color color) => coordinates[(int)color].Add(coord);
+        public void Remove(Coord coord) => Put(coord, Color.None);
     }
 }

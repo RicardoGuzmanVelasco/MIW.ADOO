@@ -2,15 +2,17 @@ namespace MIW.ADOO.Runtime
 {
     public class TicTacToe
     {
+        public const int PlayersCount = 2;
+        
         readonly Turn turn;
         readonly Board board;
-        readonly Player[] players = new Player[2];
+        readonly Player[] players = new Player[PlayersCount];
 
         public TicTacToe()
         {
             turn = new Turn();
             board = new Board();
-            for(var i = 0; i < 2; i++)
+            for(var i = 0; i < PlayersCount; i++)
                 players[i] = new Player(i);
         }
         

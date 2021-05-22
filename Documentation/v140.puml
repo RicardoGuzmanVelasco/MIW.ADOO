@@ -1,0 +1,139 @@
+@startuml
+
+enum Direction
+{
+    None,
+    Vertical,
+    Horizontal,
+    Diagonal,
+    InverseDiagonal
+}
+
+enum Color
+{
+    None,
+    X,
+    O
+    
+    +ToString()
+}
+Color <.. Player
+Color <.. Board
+
+class ClosedInterval <<ValueObject>>
+{
+    -min : int
+    -max : int
+    
+    +ClosedInterval(min : int, max : int)
+    +Includes(value : int) : bool
+    
+    +ToString() : string
+}
+ClosedInterval <.. Coord
+
+class LimitedIntDialog
+{
+    -title : string
+    -limits : ClosedInterval
+    
+    +LimitedIntDialog(title: string, max: int)
+    +LimitedIntDialog(title: string, min: int, max :int)
+    
+    +Read() : int
+}
+LimitedIntDialog <.. Coord
+LimitedIntDialog ..> IO
+LimitedIntDialog ..> ClosedInterval
+
+class Coord
+{
+    +Row : int {get}
+    +Col : int {get}
+    
+    +DirectionRelativeTo(other : Coord) : Direction
+    -IsInDiagonal() : bool
+    -IsInInverseDiagonal() : bool
+    
+    +Read(title: string)
+    +Equals(other: Coord)
+}
+Coord ..> IO
+Coord ..> Direction
+Coord ..> Board
+
+class Board
+{
+    +{static} Dimension : int = 3 <<const>>
+    
+    -coordinates : Dictionary<int, HashSet<Coord>>
+        
+    +Board()
+    
+    +IsTicTacToe() : bool
+    -IsTicTacToe(color : Color) : bool
+    +IsComplete() : bool
+    +IsTileEmpty(coord : Coord) : bool
+    +IsTileFull(coord : Coord, color : Color) : bool
+
+    +Put(coord : Coord, color : Color)
+    +Remove(coord : Coord)    
+    
+    +Write()
+}
+Board ..> IO
+Board ..> Color
+
+class Player
+{
+    ~color : Color
+    
+    +Player(i: int)
+    +Put(board : Board)
+    -Put(board : Board, title: string, fromCoord : Coord)
+    +Move(board : Board)
+    +Win()
+}
+Player ..> Board
+Player ..> IO
+
+class Turn
+{
+    ~value : int = 0
+    +Turn()
+    +Current() << "Take" >>
+    +Next() << "NotTake">>
+    +Change()
+}
+
+class TicTacToe
+{
+    +PlayersCount : int = 2 {static} <<const>>
+    
+    -board : Board 
+    -players : Player[] [0..*]
+    -turn : Turn
+    
+    +TicTacToe()
+    +Play()
+}
+TicTacToe --> Board
+TicTacToe --> Player
+TicTacToe --> Turn
+
+
+
+
+
+
+class IO <<static>>
+{
+    +ReadString(title : string) : string {static}
+    +ReadInt(title : string) : int {static}
+    
+    +Write(title : string) {static}
+    +WriteLn() {static}
+    +WriteError(format : string) {static}
+}
+
+@enduml
