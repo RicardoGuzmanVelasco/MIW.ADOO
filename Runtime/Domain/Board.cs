@@ -33,7 +33,7 @@ namespace MIW.ADOO.Runtime
         }
 
         public bool IsTicTacToe() => IsTicTacToe(Color.O) || IsTicTacToe(Color.X);
-        bool IsTicTacToe(Color color)
+        public bool IsTicTacToe(Color color)
         {
             Debug.Assert(color != Color.None);
             

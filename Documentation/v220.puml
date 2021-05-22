@@ -1,0 +1,166 @@
+@startuml
+
+package Utils
+{
+    enum Utils.Direction
+    {
+        None,
+        Vertical,
+        Horizontal,
+        Diagonal,
+        InverseDiagonal
+    }
+
+    class ClosedInterval <<ValueObject>>
+    {
+        -min : int
+        -max : int
+        
+        +ClosedInterval(min : int, max : int)
+        +Includes(value : int) : bool
+        
+        +ToString() : string
+    }
+    ClosedInterval <.. Domain.Coord
+    
+    class Utils.LimitedIntDialog
+    {
+        -title : string
+        -limits : ClosedInterval
+        
+        +LimitedIntDialog(title: string, max: int)
+        +LimitedIntDialog(title: string, min: int, max :int)
+        
+        +Read() : int
+    }
+    Utils.LimitedIntDialog ..> Utils.IO
+    Utils.LimitedIntDialog ..> ClosedInterval
+    
+    class Utils.Coord
+    {
+        #Row : int {get, set}
+        #Col : int {get, set}
+        
+        +DirectionRelativeTo(other : Coord) : Utils.Direction
+        -IsInRow(other : Coord) : bool
+        -IsInCol(other : Coord) : bool
+        -IsInDiagonal() : bool
+        
+        +Equals(other: Coord)
+    }
+    Utils.Coord ..> Utils.Direction
+}
+
+package Domain
+{
+    enum Color
+    {
+        None,
+        X,
+        O
+    }
+    Color <.. Board
+    
+    class Domain.Coord
+    {
+        -{static} Dimension : int = 3 <<readonly>>
+        -{field}{static} Limits : Utils.ClosedInterval = new(0, Dimension - 1) <<readonly>>
+     
+        -coord : Coord   
+        +Read(title: string)
+        
+        +DirectionRelativeTo(other : Coord) : Utils.Direction <<override>>
+        -IsInInverseDiagonal() : bool
+    }
+    Domain.Coord *-- Utils.Coord 
+    Domain.Coord ..> Utils.Direction
+    Domain.Coord ..> Utils.IO
+    Domain.Coord ..> Utils.LimitedIntDialog
+    
+    class Board
+    {
+        -coordinates : Dictionary<int, HashSet<Coord>>
+            
+        +Board(numPlayers : int)
+        
+        +IsTicTacToe() : bool
+        -IsTicTacToe(color : Color) : bool
+        +IsComplete() : bool
+        +IsTileEmpty(coord : Coord) : bool
+        +IsTileFull(coord : Coord, color : Color) : bool
+    
+        +Put(coord : Coord, color : Color)
+        +Remove(coord : Coord)    
+        
+        +Write()
+    }
+    Board ..> Utils.IO
+    Board --> Domain.Coord
+    
+    class Turn
+    {
+        -value : int = 0
+        
+        +Turn()
+        
+        +Current() : Color
+        +Next() :Color
+        +Change()
+        
+        +NextIndex() : int
+    }
+    Turn ..> Color
+    
+    class TicTacToe
+    {
+        +PlayersCount : int = 2 {static} <<const>>
+        
+        -board : Board 
+        -turn : Turn
+        
+        +TicTacToe()
+        +Play()
+    }
+    TicTacToe --> Board
+    TicTacToe --> Turn
+    TicTacToe --> PutController
+    TicTacToe --> MoveController
+    TicTacToe ..> Utils.IO
+    
+    class PutController
+    {
+        -turn : Turn <<readonly>>
+        -board : Board <<readonly>>
+        
+        -target : Coord
+        
+        +PutController(turn : Turn, board : Board)
+        +Put()
+    }
+    PutController ..> Coord
+    
+    class MoveController
+    {
+        -turn : Turn <<readonly>>
+        -board : Board <<readonly>>
+        
+        -origin : Coord
+        -target : Coord
+        
+        +MoveController(turn : Turn, board : Board)
+        +Move()
+    }
+    MoveController ..> Coord
+    
+    class Utils.IO <<static>>
+    {
+        +ReadString(title : string) : string {static}
+        +ReadInt(title : string) : int {static}
+        
+        +Write(title : string) {static}
+        +WriteLn() {static}
+        +WriteError(format : string) {static}
+    }
+}
+
+@enduml

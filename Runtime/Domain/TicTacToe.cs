@@ -1,3 +1,5 @@
+using MIW.ADOO.Runtime.Utils;
+
 namespace MIW.ADOO.Runtime
 {
     public class TicTacToe
@@ -5,18 +7,18 @@ namespace MIW.ADOO.Runtime
         const int PlayersCount = 2;
         
         readonly Board board;
-        readonly Player[] players;
         readonly Turn turn;
+        
+        readonly PutController putController;
+        readonly MoveController moveController;
 
         public TicTacToe()
         {
+            turn = new Turn();
             board = new Board(PlayersCount);
-            
-            players = new Player[PlayersCount];
-            for(var i = 0; i < PlayersCount; i++)
-                players[i] = new Player(i, PlayersCount, board);
-            
-            turn = new Turn(players);
+
+            putController = new PutController(turn, board);
+            moveController = new MoveController(turn, board);
         }
         
         public void Play()
@@ -25,14 +27,14 @@ namespace MIW.ADOO.Runtime
             {
                 board.Write();
                 if(!board.IsComplete())
-                    turn.Current().Put();
+                    putController.Put();
                 else
-                    turn.Current().Move();
+                    moveController.Move();
                 turn.Change();
             } while(!board.IsTicTacToe());
 
             board.Write();
-            turn.Next().Win();
+            IO.Write("Winner: " + turn.Next());
         }
     }
 }
