@@ -1,0 +1,45 @@
+@startuml
+
+class Board
+{
+    +{static} Color : char[,] [0..*] = {'x', 'o'}
+    
+    -tokens : char[,] [0..*]
+        
+    +Board()
+    
+    +Win(turn: int)
+    +IsTicTacToe : bool
+    -IsTicTacToe(token : char) : bool
+    +IsComplete() : bool
+    -IsTileEmpty(row : int, column: int) : bool
+    -IsTileFull(row : int, column: int) : bool
+    
+    +Put(turn : int, ticTacToe : TicTacToe)
+    +Move(turn : int, ticTacToe : TicTacToe)
+    +Write()
+    
+    +ToString() : string
+}
+Board --> IO
+
+class IO <<static>>
+{
+    +ReadString(title : string) : string {static}
+    +ReadInt(title : string) : int {static}
+    
+    +Write(title : string) {static}
+    +WriteLn() {static}
+    +WriteError(format : string) {static}
+}
+
+class TicTacToe
+{
+    -int turn
+    -Board board
+    
+    +TicTacToe()
+    +Play()
+}
+TicTacToe --> Board
+@enduml
