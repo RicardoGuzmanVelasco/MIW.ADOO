@@ -3,7 +3,7 @@ namespace MIW.ADOO.Runtime
     public class TicTacToe
     {
         int turn;
-        Board board;
+        readonly Board board;
 
         public TicTacToe()
         {
@@ -17,9 +17,9 @@ namespace MIW.ADOO.Runtime
             {
                 board.Write();
                 if(!board.IsComplete())
-                    board.Put(turn, this);
+                    board.Put(turn);
                 else
-                    board.Move(turn, this);
+                    board.Move(turn);
                 turn = (turn + 1) % 2;
             } while(!board.IsTicTacToe());
 

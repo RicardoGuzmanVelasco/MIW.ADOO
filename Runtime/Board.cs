@@ -6,15 +6,15 @@ namespace MIW.ADOO.Runtime
     public class Board
     {
         public static readonly char[] Color = {'x', 'o'};
-        
-        Token[,] tokens;
+
+        readonly char[,] tokens;
 
         public Board()
         {
-            tokens = new Token[3,3];
+            tokens = new char[3,3];
             for(var i = 0; i < 3; i++)
             for(var j = 0; j < 3; j++)
-                tokens[i, j] = new Token('_');
+                tokens[i, j] = '_';
         }
         
         public bool IsComplete()
@@ -23,7 +23,7 @@ namespace MIW.ADOO.Runtime
 
             for(var i = 0; i < 3; i++)
             for(var j = 0; j < 3; j++)
-                if(!tokens[i, j].Equals(new Token('_')))
+                if(!tokens[i, j].Equals('_'))
                     tokensCount++;
 
             return tokensCount == 6;
@@ -31,7 +31,7 @@ namespace MIW.ADOO.Runtime
         
         public void Win(int turn)
         {
-            Debug.Log("Ha ganado " + Board.Color[turn]);
+            Debug.Log("Ha ganado " + Color[turn]);
         }
 
         public bool IsTicTacToe()
@@ -41,56 +41,56 @@ namespace MIW.ADOO.Runtime
 
         bool IsTicTacToe(char token)
         {
-            if(tokens[1, 1].Equals(new Token(token)))
+            if(tokens[1, 1].Equals(token))
             {
-                if(tokens[0, 0].Equals(new Token(token)))
+                if(tokens[0, 0].Equals(token))
                 {
-                    return tokens[2, 2].Equals(new Token(token));
+                    return tokens[2, 2].Equals(token);
                 }
 
-                if(tokens[0, 2].Equals(new Token(token)))
+                if(tokens[0, 2].Equals(token))
                 {
-                    return tokens[2, 0].Equals(new Token(token));
+                    return tokens[2, 0].Equals(token);
                 }
 
-                if(tokens[0, 1].Equals(new Token(token)))
+                if(tokens[0, 1].Equals(token))
                 {
-                    return tokens[2, 1].Equals(new Token(token));
+                    return tokens[2, 1].Equals(token);
                 }
 
-                if(tokens[1, 0].Equals(new Token(token)))
+                if(tokens[1, 0].Equals(token))
                 {
-                    return tokens[1, 2].Equals(new Token(token));
+                    return tokens[1, 2].Equals(token);
                 }
 
                 return false;
             }
 
-            if(tokens[0, 0].Equals(new Token(token)))
+            if(tokens[0, 0].Equals(token))
             {
-                if(tokens[0, 1].Equals(new Token(token)))
+                if(tokens[0, 1].Equals(token))
                 {
-                    return tokens[0, 2].Equals(new Token(token));
+                    return tokens[0, 2].Equals(token);
                 }
 
-                if(tokens[1, 0].Equals(new Token(token)))
+                if(tokens[1, 0].Equals(token))
                 {
-                    return tokens[2, 0].Equals(new Token(token));
+                    return tokens[2, 0].Equals(token);
                 }
 
                 return false;
             }
 
-            if(tokens[2, 2].Equals(new Token(token)))
+            if(tokens[2, 2].Equals(token))
             {
-                if(tokens[1, 2].Equals(new Token(token)))
+                if(tokens[1, 2].Equals(token))
                 {
-                    return tokens[0, 2].Equals(new Token(token));
+                    return tokens[0, 2].Equals(token);
                 }
 
-                if(tokens[2, 1].Equals(new Token(token)))
+                if(tokens[2, 1].Equals(token))
                 {
-                    return tokens[2, 0].Equals(new Token(token));
+                    return tokens[2, 0].Equals(token);
                 }
 
                 return false;
@@ -101,17 +101,17 @@ namespace MIW.ADOO.Runtime
 
         bool IsTileEmpty(int row, int column)
         {
-            return tokens[row, column].Equals(new Token('_'));
+            return tokens[row, column].Equals('_');
         }
 
         bool IsTileFull(int row, int column, char color)
         {
-            return tokens[row, column].Equals(new Token(color));
+            return tokens[row, column].Equals(color);
         }
 
-        public void Move(int turn, TicTacToe ticTacToe)
+        public void Move(int turn)
         {
-            Debug.Log("Mueve ficha " + Board.Color[turn]);
+            Debug.Log("Mueve ficha " + Color[turn]);
 
             int originRow = 0, originColumn = 0;
             int targetRow = 0, targetColumn = 0;
@@ -156,7 +156,7 @@ namespace MIW.ADOO.Runtime
                     } while(!ok);
                 } while(1 <= originColumn || originColumn >= 3);
 
-                ok = IsTileFull(originRow - 1, originColumn - 1, Board.Color[turn]);
+                ok = IsTileFull(originRow - 1, originColumn - 1, Color[turn]);
                 if(!ok)
                     Debug.LogError("Casilla no ocupada por el jugador que está moviendo");
             } while(!ok);
@@ -205,13 +205,13 @@ namespace MIW.ADOO.Runtime
                     Debug.LogError("Casilla no vacía");
             } while(!ok);
 
-            tokens[originRow - 1, originColumn - 1] = new Token('_');
-            tokens[targetRow - 1, targetColumn - 1] = new Token(Board.Color[turn]);
+            tokens[originRow - 1, originColumn - 1] = '_';
+            tokens[targetRow - 1, targetColumn - 1] = Color[turn];
         }
 
-        public void Put(int turn, TicTacToe ticTacToe)
+        public void Put(int turn)
         {
-            Debug.Log("Pone ficha " + Board.Color[turn]);
+            Debug.Log("Pone ficha " + Color[turn]);
 
             int targetRow = 0, targetColumn = 0;
             bool ok;
@@ -260,7 +260,7 @@ namespace MIW.ADOO.Runtime
                     IO.Write("Casilla no vacía");
             } while(!ok);
 
-            tokens[targetRow - 1, targetColumn - 1] = new Token(Color[turn]);
+            tokens[targetRow - 1, targetColumn - 1] = Color[turn];
         }
         
         public void Write() => IO.Write(ToString());

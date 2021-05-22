@@ -1,14 +1,5 @@
 @startuml
 
-class Token <<Value Object>>
-{
-    +Value : char {get}
-    
-    +Token(value : char)
-    +Clone()
-    +Equals(other : Token)
-}
-
 class Board
 {
     +{static} Color : char[,] [0..*] = {'x', 'o'}
@@ -24,14 +15,13 @@ class Board
     -IsTileEmpty(row : int, column: int) : bool
     -IsTileFull(row : int, column: int) : bool
     
-    +Put(turn : int)
-    +Move(turn : int)
+    +Put(turn : int, ticTacToe : TicTacToe)
+    +Move(turn : int, ticTacToe : TicTacToe)
     +Write()
     
     +ToString() : string
 }
 Board ..> IO
-Board --> Token
 
 class IO <<static>>
 {
