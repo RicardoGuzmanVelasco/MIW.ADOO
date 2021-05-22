@@ -27,11 +27,7 @@ namespace MIW.ADOO.Runtime
             return tokensCount == 6;
         }
 
-        public bool IsTicTacToe()
-        {
-            return IsTicTacToe('x') || IsTicTacToe('o');
-        }
-
+        public bool IsTicTacToe() => IsTicTacToe('x') || IsTicTacToe('o');
         bool IsTicTacToe(char token)
         {
             if(tokens[1, 1].Equals(token))
@@ -92,16 +88,9 @@ namespace MIW.ADOO.Runtime
             return false;
         }
 
-        public bool IsTileEmpty(int row, int column)
-        {
-            return tokens[row, column].Equals('_');
-        }
+        public bool IsTileEmpty(Coord coord) => IsTileFull(coord, '_');
+        public bool IsTileFull(Coord coord, char color) => tokens[coord.Row, coord.Col].Equals(color);
 
-        public bool IsTileFull(int row, int column, char color)
-        {
-            return tokens[row, column].Equals(color);
-        }
-        
         public void Write() => IO.Write(ToString());
         
         public override string ToString()
@@ -118,14 +107,7 @@ namespace MIW.ADOO.Runtime
             return board;
         }
 
-        public void Put(int row, int column, char color)
-        {
-            tokens[row, column] = color;
-        }
-
-        public void Remove(int row, int column)
-        {
-            tokens[row, column] = '_';
-        }
+        public void Put(Coord coord, char color) => tokens[coord.Row, coord.Col] = color;
+        public void Remove(Coord coord) => Put(coord, '_');
     }
 }

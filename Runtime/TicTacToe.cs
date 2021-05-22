@@ -2,9 +2,9 @@ namespace MIW.ADOO.Runtime
 {
     public class TicTacToe
     {
-        Turn turn;
+        readonly Turn turn;
         readonly Board board;
-        Player[] players;
+        readonly Player[] players = new Player[2];
 
         public TicTacToe()
         {
